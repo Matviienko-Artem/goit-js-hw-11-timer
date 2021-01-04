@@ -18,3 +18,11 @@ body {
    */
   background-image: url('./images/bg-pattern.png');
 }
+
+.value {
+  font-size: 30px;
+}
+
+.label {
+  font-size: 20px;
+}

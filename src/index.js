@@ -1,29 +1,35 @@
 import './styles.css';
 
-// function digital_root(n) {
-//   if (n.length > 1) {
-//     console.log(n);
-//     // n.map((value, index) => {
-//     //   console.log(value);
-//     //   console.log(index);
-//     // });
-//   }
-// }
+const refs = {
+  daysRef: document.querySelector('[data-value=days]'),
+  hoursRef: document.querySelector('[data-value=hours]'),
+  minsRef: document.querySelector('[data-value=mins]'),
+  secsRef: document.querySelector('[data-value=secs]'),
+};
 
-// const proba = digital_root(164);
-// console.log(proba);
-
-/// Задача с Codewars
-
-function digitalRoot(namber) {
-  const Namber = toString(namber);
-  const stringValue = Namber.length;
-  console.log(stringValue);
-  if (stringValue > 1) {
-    for (let i = 0; i < stringValue; i += 1) {
-      console.log(namber);
-    }
-  }
+function pad(value) {
+  return String(value).padStart(2, '0');
 }
 
-digitalRoot(2);
+const startTime = new Date('Jan 7, 2021');
+
+setInterval(() => {
+  updateClockFace(0);
+  const currentTime = Date.now();
+  const deltaTime = startTime - currentTime;
+  updateClockFace(deltaTime);
+}, 1000);
+
+function updateClockFace(time) {
+  const days = pad(Math.floor(time / (1000 * 60 * 60 * 24)));
+  const hours = pad(
+    Math.floor((time % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+  );
+  const mins = pad(Math.floor((time % (1000 * 60 * 60)) / (1000 * 60)));
+  const secs = pad(Math.floor((time % (1000 * 60)) / 1000));
+
+  refs.daysRef.textContent = `${days}`;
+  refs.hoursRef.textContent = `${hours}`;
+  refs.minsRef.textContent = `${mins}`;
+  refs.secsRef.textContent = `${secs}`;
+}
