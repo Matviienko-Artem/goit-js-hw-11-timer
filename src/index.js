@@ -1,5 +1,4 @@
 import './styles.css';
-// import './js-friends';
 
 const refs = {
   daysRef: document.querySelector('[data-value=days]'),
@@ -9,40 +8,42 @@ const refs = {
 };
 
 class CountdownTimer {
-  constructor(targetDate) {
+  constructor({ selector, targetTime }) {
     this.selector = document.querySelector(selector);
-    this.targetTime = targetDate;
+    this.targetTime = targetTime;
   }
+
   pad(value) {
     return String(value).padStart(2, '0');
   }
-  updateClockFace(time) {
-    const pad = this.pad;
 
-    const days = pad(Math.floor(time / (1000 * 60 * 60 * 24)));
-    const hours = pad(
+  updateClockFace(time) {
+    const days = this.pad(Math.floor(time / (1000 * 60 * 60 * 24)));
+    const hours = this.pad(
       Math.floor((time % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
     );
-    const mins = pad(Math.floor((time % (1000 * 60 * 60)) / (1000 * 60)));
-    const secs = pad(Math.floor((time % (1000 * 60)) / 1000));
+
+    const mins = this.pad(Math.floor((time % (1000 * 60 * 60)) / (1000 * 60)));
+    const secs = this.pad(Math.floor((time % (1000 * 60)) / 1000));
 
     refs.daysRef.textContent = `${days}`;
     refs.hoursRef.textContent = `${hours}`;
     refs.minsRef.textContent = `${mins}`;
     refs.secsRef.textContent = `${secs}`;
   }
-  startClock = setInterval(() => {
-    // updateClockFace(0);
-    const targetTime = this.targetTime;
-    const currentTime = Date.now();
-    let deltaTime = targetTime - currentTime;
-    // this.updateClockFace(deltaTime);
-    console.log(targetTime.getTime());
-    // console.log(this.updateClockFace(deltaTime));
-  }, 1000);
+
+  startClock() {
+    setInterval(() => {
+      const deltaTime = this.targetTime.getTime() - Date.now();
+
+      this.updateClockFace(deltaTime);
+    }, 1000);
+  }
 }
 
 const timer = new CountdownTimer({
   selector: '#timer-1',
-  targetDate: new Date('Jul 17, 2021'),
+  targetTime: new Date('Jul 17, 2021'),
 });
+
+timer.startClock();
