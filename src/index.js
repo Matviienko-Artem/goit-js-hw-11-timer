@@ -1,4 +1,5 @@
 import './styles.css';
+// import './js-friends';
 
 const refs = {
   daysRef: document.querySelector('[data-value=days]'),
@@ -7,29 +8,44 @@ const refs = {
   secsRef: document.querySelector('[data-value=secs]'),
 };
 
-function pad(value) {
-  return String(value).padStart(2, '0');
+class CountdownTimer {
+  constructor(targetDate) {
+    // this.selector = document.querySelector(selector);
+    this.targetTime = targetDate;
+  }
+  pad(value) {
+    return String(value).padStart(2, '0');
+  }
+  updateClockFace(time) {
+    const pad = this.pad;
+
+    const days = pad(Math.floor(time / (1000 * 60 * 60 * 24)));
+    const hours = pad(
+      Math.floor((time % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+    );
+    const mins = pad(Math.floor((time % (1000 * 60 * 60)) / (1000 * 60)));
+    const secs = pad(Math.floor((time % (1000 * 60)) / 1000));
+
+    refs.daysRef.textContent = `${days}`;
+    refs.hoursRef.textContent = `${hours}`;
+    refs.minsRef.textContent = `${mins}`;
+    refs.secsRef.textContent = `${secs}`;
+  }
+  startClock = setInterval(() => {
+    // updateClockFace(0);
+    const targetTime = this.targetTime;
+    const currentTime = Date.now();
+    let deltaTime = targetTime - currentTime;
+    // this.updateClockFace(deltaTime);
+    console.log(targetTime.getTime());
+    // console.log(this.updateClockFace(deltaTime));
+  }, 1000);
 }
 
-const startTime = new Date('Jan 7, 2021');
+const timer = new CountdownTimer({
+  targetDate: new Date('Jul 17, 2019'),
+});
 
-setInterval(() => {
-  updateClockFace(0);
-  const currentTime = Date.now();
-  const deltaTime = startTime - currentTime;
-  updateClockFace(deltaTime);
-}, 1000);
+const time = new Date('Jul 17, 2019');
 
-function updateClockFace(time) {
-  const days = pad(Math.floor(time / (1000 * 60 * 60 * 24)));
-  const hours = pad(
-    Math.floor((time % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-  );
-  const mins = pad(Math.floor((time % (1000 * 60 * 60)) / (1000 * 60)));
-  const secs = pad(Math.floor((time % (1000 * 60)) / 1000));
-
-  refs.daysRef.textContent = `${days}`;
-  refs.hoursRef.textContent = `${hours}`;
-  refs.minsRef.textContent = `${mins}`;
-  refs.secsRef.textContent = `${secs}`;
-}
+console.log(time.getTime());
