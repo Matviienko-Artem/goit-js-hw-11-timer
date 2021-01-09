@@ -22,7 +22,6 @@ class CountdownTimer {
     const hours = this.pad(
       Math.floor((time % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
     );
-
     const mins = this.pad(Math.floor((time % (1000 * 60 * 60)) / (1000 * 60)));
     const secs = this.pad(Math.floor((time % (1000 * 60)) / 1000));
 
@@ -32,11 +31,15 @@ class CountdownTimer {
     refs.secsRef.textContent = `${secs}`;
   }
 
-  startClock() {
-    setInterval(() => {
-      const deltaTime = this.targetTime.getTime() - Date.now();
+  previewClock() {
+    const deltaTime = this.targetTime.getTime() - Date.now();
+    this.updateClockFace(deltaTime);
+  }
 
-      this.updateClockFace(deltaTime);
+  startClock() {
+    this.previewClock();
+    setInterval(() => {
+      this.previewClock();
     }, 1000);
   }
 }
